@@ -147,4 +147,3 @@ output/
 * **Challenge Paper**: *Psychogyios et al., EndoVis 2022 SAR-RARP50*
 
 
-👉 Do you want me to also **add a visual pipeline diagram** (ASCII or mermaid flowchart) for GitHub rendering? That would make it even easier to follow.

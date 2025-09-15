@@ -1,21 +1,24 @@
-SAR-RARP50 Surgical Instrument Segmentation Pipeline
+# SAR-RARP50 Surgical Instrument Segmentation Pipeline
 
-Project Overview
-This repository implements a comprehensive, reproducible pipeline for semantic segmentation of surgical instruments using the SAR-RARP50 dataset. The project is designed for Windows and Unix systems, with modular code, configurations, and outputs organized by processing step.
+## Project Overview
 
-Dataset: 50 robotic prostatectomy (RARP) suturing videos with pixel-wise annotations
+This repository implements a **comprehensive, reproducible pipeline** for semantic segmentation of surgical instruments using the **SAR-RARP50 dataset**.
+The project supports both **Windows** and **Unix/Linux** environments, with modular **code**, **configuration files**, and **outputs** organized by processing step.
 
-Objective: Train and evaluate robust segmentation models for surgical tool understanding
+* **Dataset**: 50 robotic prostatectomy (RARP) suturing videos with pixel-wise annotations
+* **Objective**: Train and evaluate robust segmentation models for surgical tool understanding
+* **Scope**: End-to-end workflow — from **data acquisition** to **model evaluation**
 
-Scope: Complete workflow from data acquisition to model evaluation
+---
 
-Directory Structure
+## Directory Structure
 
-After running Step 0 (setup), your project directory will contain:
+After running **Step 0 (Setup)**, your project root will look like this:
 
+```
 ProjectMach/
-├── config/                  # YAML configuration files per step
-├── code/                    # Scripts organized by processing step
+├── config/                # YAML configuration files (step1_config.yaml ... step7_config.yaml)
+├── code/                  # Scripts per processing step
 │   ├── step1_download/
 │   ├── step2_unzip/
 │   ├── step3_analyze_rgb/
@@ -23,54 +26,125 @@ ProjectMach/
 │   ├── step5_augment/
 │   ├── step6_train_model/
 │   └── step7_test_model/
-├── data/                    # Raw dataset files (train.zip, test.zip)
-├── output/                  # Processing outputs organized by step (01-07)
-├── project_config.yaml      # Global configuration (root paths)
-└── README.md               # This file
+├── data/                  # Raw dataset archives (train.zip, test.zip)
+├── output/                # Outputs organized by step (01–07)
+├── project_config.yaml    # Global config with root paths
+└── README.md              # This file
+```
 
-Each processing step generates structured outputs in dedicated folders:
+### Output Structure
 
+Each step generates its own structured results:
+
+```
 output/
-├── output_step_01/     # Download confirmation
-├── output_step_02/     # Extracted train/test (images + segmentation)
-├── output_step_03/     # RGB masks + class distribution analysis
-├── output_step_04/     # Dataset split assignments
-├── output_step_05/     # Augmented train/validation/test sets
-├── output_step_06/     # Model checkpoints and training logs
-└── output_step_07/     # Predictions and evaluation metrics
+├── output_step_01/   # Download confirmation
+├── output_step_02/   # Extracted train/test (images + segmentation)
+├── output_step_03/   # RGB masks + class distribution CSV
+├── output_step_04/   # Dataset split assignments
+├── output_step_05/   # Augmented train/validation/test sets
+├── output_step_06/   # Model checkpoints, logs, metrics
+└── output_step_07/   # Predictions + evaluation results
+```
 
-Pipeline Steps
-Step 0 - Setup: Creates directory structure, placeholder configurations, and initialization files
-Step 1 - Download: Downloads training and test archives to data/ directory
-Step 2 - Unzip & Reorganize: Extracts videos and organizes into images/ and segmentation/ folders
-Step 3 - Analyze & RGB Masks: Computes class distributions and converts grayscale to RGB masks
-Step 4 - Train/Val Split: Creates stratified 90:10 split preserving class distributions
-Step 5 - Augmentation: Applies class-aware data augmentation strategies
-Step 6 - Train Model: Trains SegFormer model with 960×540 resolution and saves checkpoints
-Step 7 - Evaluation: Evaluates model on test set and computes comprehensive metrics
+---
 
-Requirements
-System Requirements:
-•	Python 3.10 or higher
-•	PyTorch with CUDA support (recommended)
+## Pipeline Steps
 
-Dependencies:
-•	tqdm, numpy, pandas, Pillow, OpenCV, matplotlib, pyyaml
+1. **Step 0 – Setup**
+   Initialize directory structure and placeholder configs.
 
-Quick Start
-1.	Initialize Project Structure:
-2.	python code/step0_setup.py
-3.	Download Dataset:
-4.	python code/step1_download/download.py --config config/step1_config.yaml
-5.	Execute Remaining Steps: Progress sequentially through Steps 2-7, each using its respective configuration file.
+2. **Step 1 – Download**
+   Download training/test archives into `data/`.
+   Links:
 
-Evaluation Metrics
-Mean IoU (mIoU): Measures pixel-wise overlap between predictions and ground truth
-Mean Normalized Surface Dice (mNSD): Evaluates boundary-sensitive segmentation quality
-Segmentation Score: Combined metric calculated as √(mIoU × mNSD)
+   * [Train set](https://rdr.ucl.ac.uk/ndownloader/articles/24932529/versions/1)
+   * [Test set](https://rdr.ucl.ac.uk/ndownloader/articles/24932499/versions/1)
 
-References
-Dataset Source: SAR-RARP50 Challenge
-https://rdr.ucl.ac.uk/projects/SAR-RARP50_Segmentation_of_surgical_instrumentation_and_Action_Recognition_on_Robot-Assisted_Radical_Prostatectomy_Challenge/191091
-Pipeline Documentation: Complete Updated Guide for SAR-RARP50
+3. **Step 2 – Unzip & Reorganize**
+   Extract and reorganize into `images/` + `segmentation/` folders.
 
+4. **Step 3 – Analyze & RGB Masks**
+
+   * Compute per-class pixel statistics.
+   * Convert grayscale masks → RGB masks.
+
+5. **Step 4 – Train/Validation Split**
+
+   * Perform **90:10 stratified split** (preserving class balance).
+   * Test set remains unchanged.
+
+6. **Step 5 – Augmentation**
+
+   * Apply **class-aware augmentations** (rotation, flip, zoom, brightness, blur).
+   * Address class imbalance.
+
+7. **Step 6 – Train Model**
+
+   * Train a **SegFormer model** on 960×540 frames.
+   * Save checkpoints + logs.
+
+8. **Step 7 – Evaluation**
+
+   * Run inference on test set.
+   * Compute metrics and export predictions.
+
+---
+
+## Requirements
+
+* **System**:
+
+  * Python 3.10+
+  * CUDA-enabled GPU (recommended)
+
+* **Dependencies**:
+
+  ```
+  torch, torchvision
+  tqdm, numpy, pandas
+  Pillow, OpenCV, matplotlib
+  pyyaml
+  ```
+
+---
+
+## Quick Start
+
+1. **Initialize Project**
+
+   ```bash
+   python code/step0_setup.py
+   ```
+
+2. **Download Dataset**
+
+   ```bash
+   python code/step1_download/download.py --config config/step1_config.yaml
+   ```
+
+3. **Run Remaining Steps**
+   Execute steps 2–7 sequentially, each with its own config YAML.
+
+---
+
+## Evaluation Metrics
+
+* **Mean IoU (mIoU)**: Pixel-level overlap
+* **Mean Normalized Surface Dice (mNSD)**: Boundary-sensitive metric
+* **Segmentation Score**:
+
+  $$
+  Score = \sqrt{mIoU \times mNSD}
+  $$
+
+---
+
+## References
+
+* **Dataset**: [SAR-RARP50 Challenge](https://rdr.ucl.ac.uk/projects/SAR-RARP50_Segmentation_of_surgical_instrumentation_and_Action_Recognition_on_Robot-Assisted_Radical_Prostatectomy_Challenge/191091)
+* **Pipeline Guide**: Complete Updated Project Documentation
+* **Challenge Paper**: *Psychogyios et al., EndoVis 2022 SAR-RARP50*
+
+
+👉 Do you want me to also **add a visual pipeline diagram** (ASCII or mermaid flowchart) for GitHub rendering? That would make it even easier to follow.

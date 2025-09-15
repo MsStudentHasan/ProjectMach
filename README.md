@@ -7,10 +7,12 @@ The project supports both **Windows** and **Unix/Linux** environments, with modu
 
 * **Dataset**: 50 robotic prostatectomy (RARP) suturing videos with pixel-wise annotations
 * **Objective**: Train and evaluate robust segmentation models for surgical tool understanding
-* **Scope**: End-to-end workflow — from **data acquisition** to **model evaluation**
+* **Scope**: End-to-end workflow, from **data acquisition** to **model evaluation**
 
 ---
 
+Run each step from 0 to 7 after setting up your configurations in config files, everything will be done automatically.
+---
 ## Directory Structure
 
 After running **Step 0 (Setup)**, your project root will look like this:

@@ -1,0 +1,26 @@
+# Step 5 - Data Augmentation Config
+
+root_dir: "D:/ProjectMach"          # your project root (Windows forward slashes OK)
+
+# Inputs
+input_dir_step3: "output/output_step_03"
+input_class_distribution: "output/output_step_03/class_distribution.csv"
+input_split_assignments: "output/output_step_04/split_assignments.csv"
+
+# Outputs
+output_dir: "output/output_step_05"
+
+# Augmentation parameters
+augmentation:
+  rotation: 15          # ± degrees
+  brightness: 0.10      # ±10%
+  zoom: 0.10            # ±10% (random crop & resize back)
+  blur: 5               # Gaussian blur radius / kernel (torch uses odd kernel size)
+  horizontal_flip: true
+
+# Performance knobs
+performance:
+  backend: "auto"       # "auto" | "torch" | "pil"  (auto → torch if CUDA available else PIL)
+  workers: 8            # parallel workers per video (I/O + CPU)
+  copy_workers: 16      # parallel file copy workers
+  seed: 1337            # for reproducibility of random choices within each policy bucket

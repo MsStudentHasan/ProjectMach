@@ -1,0 +1,12 @@
+# Configuration for Step 3: Analyze Masks & Create RGB Masks
+
+root_dir: "D:/ProjectMach"
+
+# Input directories (from Step 2 outputs)
+input_train_dir: "D:/ProjectMach/output/output_step_02/train"
+input_test_dir: "D:/ProjectMach/output/output_step_02/test"
+
+# Output directories
+output_train_dir: "D:/ProjectMach/output/output_step_03/train"
+output_test_dir: "D:/ProjectMach/output/output_step_03/test"
+output_csv: "D:/ProjectMach/output/output_step_03/class_distribution.csv"

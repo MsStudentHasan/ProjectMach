@@ -1,0 +1,67 @@
+# =========================
+# Step 6 Train Config
+# =========================
+project:
+  root_dir: "D:/ProjectMach"
+
+data:
+  # Step 5 output location containing 'train' and 'validation' splits
+  step5_dir: "D:/ProjectMach/output/output_step_05"
+  train_dirname: "train"
+  val_dirname: "validation"
+
+  # RGB -> class map (excluding background). If you leave it empty,
+  # the script will auto-discover colors from masks (ignoring pure black).
+  # Keys are "R-G-B", values are class names (for reports only).
+  # Index order is the order inferred here (or discovered).
+  color_map:
+    "255-0-0": "tool_shaft"
+    "0-255-0": "tool_clasper"
+    "0-0-255": "tool_wrist"
+    "255-255-0": "thread"
+    "255-0-255": "clamps"
+    "0-255-255": "suturing_needle"
+    "128-128-128": "suction_tool"
+    "255-165-0": "catheter"
+    "128-0-128": "needle_holder"
+  background_rgb: [ 0, 0, 0 ] # will be excluded from training/metrics
+
+  # Image size for training (you can keep native 1920x1080 if GPU allows)
+  # Evaluation metrics are computed on *the same* size used here.
+  # If laptop is tight on VRAM, use 960x540.
+  train_size: [960, 540]   # [width, height]
+
+loader:
+  batch_size: 2
+  num_workers: 4
+  shuffle: true
+  pin_memory: true
+
+train:
+  epochs: 40
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  grad_clip: 1.0
+  amp: true
+  seed: 42
+  # Loss mix (each term averaged across classes, excluding background)
+  loss_weights:
+    iou: 0.5         # Soft Jaccard
+    nsd: 0.5         # Surface NSD-like (tau below)
+  nsd_tau_px: 3       # τ in pixels (as required)
+  save_every_epochs: 1
+  log_every_steps: 50
+
+model:
+  encoder: "resnet34"   # torchvision
+  pretrained: true
+  base_channels: 32
+  # Attention on selected skip levels (from finest to coarsest: 0..3)
+  attention_skips: [1, 2]   # put attention on mid skips, not all
+
+output:
+  step6_dir: "D:/ProjectMach/output/output_step_06"
+  checkpoints_dirname: "checkpoints"
+  metrics_dirname: "metrics"
+  best_name: "best_model.pth"
+  last_name: "last_model.pth"

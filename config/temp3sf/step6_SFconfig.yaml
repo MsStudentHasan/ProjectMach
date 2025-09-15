@@ -1,0 +1,45 @@
+# Step 6 – SegFormer (train on Step 5 splits)
+# Use forward slashes in paths on Windows or escape backslashes.
+
+project:
+  save_dir: "D:/ProjectMach/output/output_step_06/segformer"   # run subfolder auto-created
+  seed: 123
+
+data:
+  train_root: "D:/ProjectMach/output/output_step_05/train"     # contains video_xx/images, video_xx/RGB_segmentation
+  val_root:   "D:/ProjectMach/output/output_step_05/validation"
+  resize_to: [960, 540]   # [W, H] for training only
+  num_workers: 4
+  batch_size: 4
+  norm_mean: [0.485, 0.456, 0.406]
+  norm_std:  [0.229, 0.224, 0.225]
+  # If your masks are .png and images .jpg or .png, we’ll match by basename automatically.
+
+model:
+  segformer_name: "nvidia/mit-b2"   # e.g., nvidia/mit-b0, b2, b4
+  n_classes: 10                     # includes background
+
+optim:
+  epochs: 60
+  lr: 5.0e-5
+  weight_decay: 1.0e-4
+  amp: true
+  save_every: 1
+  resume_from: "D:/ProjectMach/output/output_step_06/checkpoints/epoch_35.pth"
+
+eval:
+  tta_flip: true
+  tta_rot_deg: 20                   # ±20°
+  nsd_tau_pix: 3
+
+classes:
+  "0": [0, 0, 0]           # Background
+  "1": [255, 0, 0]         # Tool clasper
+  "2": [0, 255, 0]         # Tool wrist
+  "3": [0, 0, 255]         # Tool shaft
+  "4": [255, 255, 0]       # Suturing needle
+  "5": [255, 0, 255]       # Thread
+  "6": [0, 255, 255]       # Suction tool
+  "7": [255, 165, 0]       # Needle Holder
+  "8": [128, 0, 128]       # Clamps
+  "9": [128, 128, 128]     # Catheter

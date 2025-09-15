@@ -1,0 +1,33 @@
+project:
+  save_dir: D:/ProjectMach/output/output_step_07/temp3sf
+  seed: 123
+
+data:
+  test_root: D:/ProjectMach/output/output_step_05/test
+  resize_to: [960, 540]     # (W,H) for inference
+  num_workers: 4
+  batch_size: 1
+  norm_mean: [0.485, 0.456, 0.406]
+  norm_std: [0.229, 0.224, 0.225]
+
+model:
+  segformer_name: nvidia/mit-b2
+  n_classes: 10
+  checkpoint: D:/ProjectMach/output/output_step_06/temp3sf/checkpoints/epoch_35.pth
+
+eval:
+  tta_flip: true
+  tta_rot_deg: 10
+  nsd_tau_pix: 3
+
+classes:
+  0: [0, 0, 0]
+  1: [255, 0, 0]
+  2: [0, 255, 0]
+  3: [0, 0, 255]
+  4: [255, 255, 0]
+  5: [255, 0, 255]
+  6: [0, 255, 255]
+  7: [128, 128, 128]
+  8: [255, 165, 0]
+  9: [128, 0, 128]

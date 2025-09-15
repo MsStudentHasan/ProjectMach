@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Data and outputs
+data/*.zip
+output/
+output_step_*/
+*.pth
+*.pt
+*.log
+*.csv
+
+# OS
+.DS_Store
+Thumbs.db

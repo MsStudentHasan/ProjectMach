@@ -1,0 +1,50 @@
+# Step 7: SegFormer Test Config
+
+test:
+  test_root: "D:/ProjectMach/output/output_step_05/test"   # test dataset (from step 5)
+  ckpt_path: "D:/ProjectMach/output/output_step_06/checkpoints/best_model.pth"
+  segformer_model: "nvidia/mit-b2"
+  batch_size: 1
+  num_workers: 2
+  amp: true
+  device: "cuda"   # use "cpu" if no GPU available
+  seed: 123
+
+preprocessing:
+  resize_to: [960, 540]  # W,H
+  norm_mean: [0.485, 0.456, 0.406]
+  norm_std: [0.229, 0.224, 0.225]
+
+classes:
+  0: [0, 0, 0]       # background
+  1: [255, 0, 0]     # tool_clasper
+  2: [0, 255, 0]     # tool_wrist
+  3: [0, 0, 255]     # tool_shaft
+  4: [255, 255, 0]   # suturing_needle
+  5: [255, 0, 255]   # thread
+  6: [0, 255, 255]   # suction_tool
+  7: [255, 165, 0]   # needle_holder
+  8: [128, 0, 128]   # clamps
+  9: [128, 128, 128] # catheter
+
+class_names:
+  0: "background"
+  1: "tool_clasper"
+  2: "tool_wrist"
+  3: "tool_shaft"
+  4: "suturing_needle"
+  5: "thread"
+  6: "suction_tool"
+  7: "needle_holder"
+  8: "clamps"
+  9: "catheter"
+
+tta:
+  rotation_deg: 20
+  flip: true
+
+nsd:
+  tau_pix: 3
+
+output:
+  out_dir: "D:/ProjectMach/output/output_step_07"

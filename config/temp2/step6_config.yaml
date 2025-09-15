@@ -1,0 +1,50 @@
+data:
+  step5_dir: D:/ProjectMach/output/output_step_05
+  train_dirname: train
+  val_dirname: validation
+  background_rgb: [0, 0, 0]
+  train_size: [960, 540]   # (W,H)
+  background_included: true
+
+  color_map:
+    "255-0-0": Tool_shaft
+    "0-255-0": Tool_clasper
+    "0-0-255": Tool_wrist
+    "255-255-0": Thread
+    "255-0-255": Clamps
+    "0-255-255": Suturing_needle
+    "128-128-128": Suction_tool
+    "255-165-0": Catheter
+    "128-0-128": Needle_Holder
+    "0-0-0": Background   # <- NEW, added as last class
+
+loader:
+  batch_size: 2
+  num_workers: 4
+  pin_memory: true
+  shuffle: true
+
+model:
+  base_channels: 32
+  pretrained: true
+  attention_skips: [1, 2]
+
+train:
+  epochs: 10
+  lr: 0.0005
+  weight_decay: 0.00001
+  amp: true
+  grad_clip: 1.0
+  log_every_steps: 100
+  seed: 1337
+  nsd_tau_px: 3.0
+  loss_weights:
+    iou: 0.6
+    nsd: 0.4
+
+output:
+  step6_dir: D:/ProjectMach/output/output_step_06
+  checkpoints_dirname: checkpoints
+  metrics_dirname: metrics
+  last_name: last_model.pth
+  best_name: best_model.pth

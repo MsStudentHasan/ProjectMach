@@ -1,0 +1,4 @@
+root_dir: "D:/ProjectMach"
+input_train: "data/train.zip"
+input_test: "data/test.zip"
+output_dir: "output/output_step_02"
